@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:connectivity_plus/connectivity_plus.dart';
+// import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/widgets.dart';
 import 'package:graphql/client.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
@@ -84,8 +84,8 @@ class _SubscriptionState extends State<Subscription> {
   Stream<QueryResult>? stream;
   GraphQLClient? client;
 
-  ConnectivityResult? _currentConnectivityResult;
-  StreamSubscription<ConnectivityResult>? _networkSubscription;
+//   ConnectivityResult? _currentConnectivityResult;
+//   StreamSubscription<ConnectivityResult>? _networkSubscription;
 
   void _initSubscription() {
     stream = client!.subscribe(widget.options);
@@ -100,8 +100,8 @@ class _SubscriptionState extends State<Subscription> {
 
   @override
   void initState() {
-    _networkSubscription =
-        Connectivity().onConnectivityChanged.listen(_onNetworkChange);
+    // _networkSubscription =
+//         Connectivity().onConnectivityChanged.listen(_onNetworkChange);
 
     super.initState();
   }
@@ -127,37 +127,37 @@ class _SubscriptionState extends State<Subscription> {
 
   @override
   void dispose() {
-    _networkSubscription?.cancel();
+    // _networkSubscription?.cancel();
     super.dispose();
   }
 
-  Future _onNetworkChange(ConnectivityResult result) async {
-    //if from offline to online
-    if (_currentConnectivityResult == ConnectivityResult.none &&
-        (result == ConnectivityResult.mobile ||
-            result == ConnectivityResult.wifi)) {
-      _currentConnectivityResult = result;
+  // Future _onNetworkChange(ConnectivityResult result) async {
+  //   //if from offline to online
+  //   if (_currentConnectivityResult == ConnectivityResult.none &&
+  //       (result == ConnectivityResult.mobile ||
+  //           result == ConnectivityResult.wifi)) {
+  //     _currentConnectivityResult = result;
 
-      // android connectivitystate cannot be trusted
-      // validate with nslookup
-      if (Platform.isAndroid) {
-        try {
-          final nsLookupResult = await InternetAddress.lookup('google.com');
-          if (nsLookupResult.isNotEmpty &&
-              nsLookupResult[0].rawAddress.isNotEmpty) {
-            _initSubscription();
-          }
-          // on exception -> no real connection, set current state to none
-        } on SocketException catch (_) {
-          _currentConnectivityResult = ConnectivityResult.none;
-        }
-      } else {
-        _initSubscription();
-      }
-    } else {
-      _currentConnectivityResult = result;
-    }
-  }
+  //     // android connectivitystate cannot be trusted
+  //     // validate with nslookup
+  //     if (Platform.isAndroid) {
+  //       try {
+  //         final nsLookupResult = await InternetAddress.lookup('google.com');
+  //         if (nsLookupResult.isNotEmpty &&
+  //             nsLookupResult[0].rawAddress.isNotEmpty) {
+  //           _initSubscription();
+  //         }
+  //         // on exception -> no real connection, set current state to none
+  //       } on SocketException catch (_) {
+  //         _currentConnectivityResult = ConnectivityResult.none;
+  //       }
+  //     } else {
+  //       _initSubscription();
+  //     }
+  //   } else {
+  //     _currentConnectivityResult = result;
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
